@@ -25,6 +25,7 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
         button.textContent = options[i];
         //Appends the button to the parent element of choices
         choices.appendChild(button);
+        button.setAttribute("id", "option")
 
         //Add a boolean value to each button based off of answer
         //If the index of the array is the same as the answer argument, answer = true else its false, can now keep track of the right answer
@@ -34,5 +35,6 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
         else{
             button.setAttribute("data-answer", false);
         }
+        
     }
 }

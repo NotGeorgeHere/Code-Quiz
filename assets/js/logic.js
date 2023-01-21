@@ -9,7 +9,8 @@ var quiz = document.querySelector("#questions");
 
 
 //Timer value, declared outside of function as will need to be used in other areas outside of function so needs to be manipulated I THINK
-var timeLeft = 60; 
+var timeLeft = 60;
+var score = 0; 
 
 startQuiz();
 
@@ -23,9 +24,7 @@ function startQuiz(){
         startScreen.setAttribute("class", "hide");
         quiz.setAttribute("class", "");
         timer();
-
-        //Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
-        questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+        questionOrder()   
     })
 }
 
@@ -36,8 +35,25 @@ function timer(){
         timeLeft--;
         timer.textContent = timeLeft
         
+        //TODO add go to end screen
         if (timeLeft === 0){
             clearInterval(timeInterval);
           }
     }, 1000)      
+}
+
+//Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
+function questionOrder(){
+    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+    /*
+    Potential layout for this function if everything works correctly
+    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+    questionAnswered();
+    questions();
+    questionAnswered()
+    */
+}
+
+function questionAnswered(){
+    var options = document.querySelector("#option");
 }
