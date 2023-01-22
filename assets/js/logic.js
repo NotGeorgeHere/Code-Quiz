@@ -10,7 +10,7 @@ var quiz = document.querySelector("#questions");
 
 //Timer value, declared outside of function as will need to be used in other areas outside of function so needs to be manipulated I THINK
 var timeLeft = 60;
-var score = 0; 
+var score = 0;
 
 startQuiz();
 
@@ -44,8 +44,9 @@ function timer(){
 
 //Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
 function questionOrder(){
-    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2),
     questionAnswered();
+    
     /*
     Potential layout for this function if everything works correctly
     questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
@@ -68,6 +69,9 @@ function questionAnswered(){
         //Tracks what is being clicked on within the element
         var option = event.target;
         
+        //TODO MAYBE TIDY THIS UP BY ADDING FOR LOOP AFTER IF STATEMENT SO THAT IT ONLY HAS TO BE DONE ONCE
+
+
         //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
         if(option.matches("button") === true){
             if (option.getAttribute("data-answer") === "true"){
@@ -77,6 +81,7 @@ function questionAnswered(){
                     button[i].remove();
                 }
                 questionTitle.remove();
+                console.log(score);
             }
             //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
             else{
