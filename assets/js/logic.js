@@ -45,6 +45,7 @@ function timer(){
 //Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
 function questionOrder(){
     questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+    questionAnswered();
     /*
     Potential layout for this function if everything works correctly
     questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
@@ -54,6 +55,37 @@ function questionOrder(){
     */
 }
 
+
+//Function to work out what happens when the question is answered
 function questionAnswered(){
-    var options = document.querySelector("#option");
+    //Local variables for each element needed
+    var choice = document.querySelector("#choices");
+    var button = document.querySelectorAll("#option");
+    var questionTitle = document.querySelector("#question-title");
+    
+    //Event listener for when anything inside the choices element is clicked
+    choice.addEventListener("click", function(event){
+        //Tracks what is being clicked on within the element
+        var option = event.target;
+        
+        //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
+        if(option.matches("button") === true){
+            if (option.getAttribute("data-answer") === "true"){
+                score++
+                //Once answered will loop through the buttons and remove them alongside the title
+                for(var i = 0; i < button.length; i++){
+                    button[i].remove();
+                }
+                questionTitle.remove();
+            }
+            //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
+            else{
+                timeLeft -= 5;
+                for(var i = 0; i < button.length; i++){
+                    button[i].remove();
+                }
+                questionTitle.remove();
+            }
+        }  
+    })
 }
