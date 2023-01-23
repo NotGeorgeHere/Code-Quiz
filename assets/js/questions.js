@@ -8,7 +8,6 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
     //Gets the id for the question-title and stores it as variable
     var questionTitle = document.querySelector("#question-title");
     var choices = document.querySelector("#choices");
-
     //Takes away 1 from the answer argument as its been reading from a base index 0 not 1 as the options are being taken in as
     answer--;
 
@@ -23,6 +22,37 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
         var index = options.indexOf(options[i]);
         var button = document.createElement("button");
         button.textContent = options[i];
+
+        button.addEventListener("click", function(event){
+            //Tracks what is being clicked on within the element
+            var option = event.target;
+            
+            //TODO MAYBE TIDY THIS UP BY ADDING FOR LOOP AFTER IF STATEMENT SO THAT IT ONLY HAS TO BE DONE ONCE
+            //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
+            if(option.matches("button") === true){
+                
+                if (option.getAttribute("data-answer") === "true"){
+                    score++;
+                    //Once answered will loop through the buttons and remove them alongside the title
+                    // for(var i = 0; i < button.length; i++){
+                    //     button[i].remove();
+                    // }
+                }
+                //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
+                else{
+                    timeLeft -= 5;
+                    // for(var i = 0; i < button.length; i++){
+                    //     button[i].remove();
+                    // }  
+                }
+                questionTitle.textContent = " ";
+                choices.textContent = "";
+                questionTracker++;
+                questionOrder();   
+            } 
+        })
+
+
         //Appends the button to the parent element of choices
         choices.appendChild(button);
         button.setAttribute("id", "option")
@@ -36,5 +66,9 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
             button.setAttribute("data-answer", false);
         }
         
+        
     }
+
+    //Local variables for each element needed
+    // var button = document.querySelectorAll("#option");
 }

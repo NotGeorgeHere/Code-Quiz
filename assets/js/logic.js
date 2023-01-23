@@ -12,6 +12,9 @@ var quiz = document.querySelector("#questions");
 var timeLeft = 60;
 var score = 0;
 
+//Global variable to track which quiz question you're on;
+var questionTracker = 0;
+
 startQuiz();
 
 //Function to start quiz
@@ -24,7 +27,7 @@ function startQuiz(){
         startScreen.setAttribute("class", "hide");
         quiz.setAttribute("class", "");
         timer();
-        questionOrder()   
+        questionOrder();  
     })
 }
 
@@ -44,16 +47,20 @@ function timer(){
 
 //Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
 function questionOrder(){
-    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2),
-    questionAnswered();
-    
-    /*
-    Potential layout for this function if everything works correctly
-    questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
-    questionAnswered();
-    questions();
-    questionAnswered()
-    */
+    console.log(questionTracker);  
+    if (questionTracker === 0){
+        questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+    }
+    else if (questionTracker === 1){
+        questions("Question 2", "gaas", "asgasfas", "asfasf", "asfasf", 1);
+    }
+    else if (questionTracker === 2){
+        questions("Question 3", "hsdfh", "shsh", "option 3", "option 4", 4);
+    }
+    else if (questionTracker === 3){
+        questions("Question 4", "option 1", "option 2", "hsdhshd", "option 4", 3);
+    }
+
 }
 
 
@@ -70,27 +77,27 @@ function questionAnswered(){
         var option = event.target;
         
         //TODO MAYBE TIDY THIS UP BY ADDING FOR LOOP AFTER IF STATEMENT SO THAT IT ONLY HAS TO BE DONE ONCE
-
-
         //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
         if(option.matches("button") === true){
+            
             if (option.getAttribute("data-answer") === "true"){
-                score++
+                score++;
                 //Once answered will loop through the buttons and remove them alongside the title
-                for(var i = 0; i < button.length; i++){
-                    button[i].remove();
-                }
-                questionTitle.remove();
-                console.log(score);
+                // for(var i = 0; i < button.length; i++){
+                //     button[i].remove();
+                // }
             }
             //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
             else{
                 timeLeft -= 5;
-                for(var i = 0; i < button.length; i++){
-                    button[i].remove();
-                }
-                questionTitle.remove();
+                // for(var i = 0; i < button.length; i++){
+                //     button[i].remove();
+                // }  
             }
-        }  
+            questionTitle.textContent = " ";
+            choice.textContent = "";
+            questionTracker++;
+            questionOrder();   
+        } 
     })
 }
