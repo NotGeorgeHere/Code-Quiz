@@ -15,7 +15,15 @@ var score = 0;
 //Global variable to track which quiz question you're on;
 var questionTracker = 0;
 
-startQuiz();
+
+//Does a check to see which HTML page is currently being presented
+if (document.URL.includes("index.html")){
+    startQuiz();
+}
+else if(document.URL.includes("highscores.html")){
+    //Run highscore stuff
+}
+
 
 //Function to start quiz
 function startQuiz(){
@@ -41,24 +49,46 @@ function timer(){
         //TODO add go to end screen
         if (timeLeft === 0){
             clearInterval(timeInterval);
+            var endScreen = document.querySelector("#end-screen");
+            endScreen.setAttribute("class", "");
           }
     }, 1000)      
 }
 
 //Function for questions, takes in question, options, and which of the 4 is the answer, ie: this one has option 2 as the answer
-function questionOrder(){ 
+function questionOrder(){
+    var endScreen = document.querySelector("#end-screen");
+    var submitButton = document.querySelector("#submit");
+    var initials = document.querySelector("#initials");
+    var totalScore = document.querySelector("#final-score");
     
+    //Adds the questions according to the tracker variable
     if (questionTracker === 0){
-        questions("Question 1", "option 1", "option 2", "option 3", "option 4", 2);
+        questions("Question 1: What keyword is used in CSS to prevent other rules from overriding it?", "!important", "!final", "!first", "!key", 1);
     }
     else if (questionTracker === 1){
-        questions("Question 2", "gaas", "asgasfas", "asfasf", "asfasf", 1);
+        questions("Question 2: How many heading tags are in HTML?", "4", "7", "6", "15", 3);
     }
     else if (questionTracker === 2){
-        questions("Question 3", "hsdfh", "shsh", "option 3", "option 4", 4);
+        questions("Question 3: Inside which HTML element do we put JavaScript?", "<js>", "<script>", "<javascript>", "<source>", 2);
     }
     else if (questionTracker === 3){
-        questions("Question 4", "option 1", "option 2", "hsdhshd", "option 4", 3);
+        questions("Question 4: How do you create a function in JavaScript?", "function myFunction()", "function = myFunction()", "function:myfunction()", "define function(myFunction)", 1);
+    }
+    else if (questionTracker === 4){
+        questions("Question 5: How does a for loop start?", "for i=1 to 5", "for(i<=5;i++)", "for(i=0;i<5)", "for (i=0;i<5;i++)", 4);
+    }
+    //Once all questions are asked takes tracker variable and can now save score and timer in new variable to be stored in local storage and go to end screen
+    else if(questionTracker === 5){
+        var finalScore = timeLeft + score;
+        endScreen.setAttribute("class", "");
+        totalScore.textContent = finalScore;
+        localStorage.setItem("finalScore", finalScore);
+        timeLeft = 1;
+
+        submitButton.addEventListener("click", function(event){
+            localStorage.setItem("initials", initials.value);
+        })
     }
     
 }

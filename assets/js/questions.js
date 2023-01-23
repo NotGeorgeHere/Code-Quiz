@@ -27,31 +27,24 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
             //Tracks what is being clicked on within the element
             var option = event.target;
             
-            //TODO MAYBE TIDY THIS UP BY ADDING FOR LOOP AFTER IF STATEMENT SO THAT IT ONLY HAS TO BE DONE ONCE
             //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
             if(option.matches("button") === true){
-                
                 if (option.getAttribute("data-answer") === "true"){
                     score++;
-                    //Once answered will loop through the buttons and remove them alongside the title
-                    // for(var i = 0; i < button.length; i++){
-                    //     button[i].remove();
-                    // }
                 }
                 //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
                 else{
                     timeLeft -= 5;
-                    // for(var i = 0; i < button.length; i++){
-                    //     button[i].remove();
-                    // }  
                 }
+                //Once this is done, it will remove the text content of the title and choices to be empty for the next question
                 questionTitle.textContent = " ";
                 choices.textContent = "";
+                //Will add 1 to the tracker to move onto next question
                 questionTracker++;
+                //Will run question order again to get the next question before appending the elements
                 questionOrder();   
             } 
         })
-
 
         //Appends the button to the parent element of choices
         choices.appendChild(button);
@@ -64,9 +57,7 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
         }
         else{
             button.setAttribute("data-answer", false);
-        }
-        
-        
+        }   
     }
 
     //Local variables for each element needed
