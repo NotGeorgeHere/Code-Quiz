@@ -6,10 +6,7 @@ var score = 0;
 var questionTracker = 0;
 
 //Does a check to see which HTML page is currently being presented
-if (document.URL.includes("index.html")){
-    startQuiz();
-}
-else if(document.URL.includes("highscores.html")){
+if(document.URL.includes("highscores.html")){
     //When highscores page is clicked on array is rendered
     renderArray();
     //Checks to see if clear highscores button is pressed, if it is then clearas local storage and re-renders the array. 
@@ -18,6 +15,9 @@ else if(document.URL.includes("highscores.html")){
         localStorage.clear();
         renderArray();    
 })
+}
+else{
+    startQuiz();
 }
 
 //Function to start quiz
