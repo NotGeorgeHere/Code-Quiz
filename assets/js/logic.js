@@ -1,4 +1,3 @@
-
 //Create quiz variable globally as will be used in multiple functions
 var quiz = document.querySelector("#questions");
 
@@ -9,16 +8,19 @@ var score = 0;
 //Global variable to track which quiz question you're on;
 var questionTracker = 0;
 
-//Global variables to keep track of the array content for the highscore page.
-var finalScoreArray = [];
-var finalInitialArray = [];
-
 //Does a check to see which HTML page is currently being presented
 if (document.URL.includes("index.html")){
     startQuiz();
 }
 else if(document.URL.includes("highscores.html")){
-    init()
+    //When highscores page is clicked on array is rendered
+    renderArray();
+    //Checks to see if clear highscores button is pressed, if it is then clearas local storage and re-renders the array. 
+    var clearScore = document.querySelector("#clear");
+    clearScore.addEventListener("click", function(event){
+        localStorage.clear();
+        renderArray();    
+})
 }
 
 //Function to start quiz
@@ -99,34 +101,52 @@ function storeArrays(){
     submitButton.addEventListener("click", function(event){
         //Checks to make sure people only put in initials
         if (initials.value.length <= 3){
-            finalInitialArray.push(initials.value);
-            finalScoreArray.push(finalScore); 
+            //Runs the savehighscore function with finalscore as an argument
+            saveHighScore(finalScore);
         }
+        
 
-        localStorage.setItem("initials", JSON.stringify(finalInitialArray));
-        localStorage.setItem("finalScore", JSON.stringify(finalScoreArray));
     })   
     }
 }
 
-function init(){
-    //Get stored arrays from local storage
-    var storedInitial = JSON.parse(localStorage.getItem("initials"));
-    var storedFinalScore = JSON.parse(localStorage.getItem("finalScore"));
-
-    // If initals and score were retrieved from localStorage, update the arrays for them
-    if (storedInitial !== null && storedFinalScore !== null){
-        finalInitialArray = storedInitial;
-        finalScoreArray = storedFinalScore;
-    }
-    renderArray();
-}
-
+//Function for rendering array
 function renderArray(){
+    //Gets the list element and creates a new variable using the highscore stored in local storage
     var highScoreList = document.querySelector("#highscores");
-    for (var i = 0; i < finalScoreArray.length; i++){
-        var li = document.createElement("li");
-        li.textContent = finalInitialArray[i] + " Score: " + finalScoreArray[i];
-        highScoreList.appendChild(li);
+    var newScore = JSON.parse(window.localStorage.getItem("highscores"));
+    //If it isnt empty, run a for loop and append each item inside the newscore object to a list element
+    if (newScore !== null){
+        for (var i = 0; i < newScore.length; i++){
+            var li = document.createElement("li");
+            li.textContent = JSON.stringify("Score: " + newScore[i].Score + " " + newScore[i].Initial);
+            highScoreList.appendChild(li);
+        }
     }
+    else{
+        //Hides the list if there are no elements ie: local storage is cleared
+        highScoreList.setAttribute("class", "hide");
+    }
+   
 }
+
+//Saves highscore and runs when submit button is pressed
+function saveHighScore(score){
+    //Gets the initial from the query selector
+    var initials = document.querySelector("#initials").value.trim();
+    //If the initials aren't blank either get the items from the current local storage object or create a new array for it
+    if (initials !== ''){
+        var highscores = JSON.parse(window.localStorage.getItem('highscores')) || [];
+        //Creates new item to be pushed into highscores object
+        var newScore = {
+            "Score": score,
+            "Initial": initials
+        }
+        highscores.push(newScore);
+        //Sets the object to highscores in local storage and goes to highscore screen
+        window.localStorage.setItem('highscores', JSON.stringify(highscores));
+        window.location.href = "highscores.html"; 
+    }
+    
+}
+
