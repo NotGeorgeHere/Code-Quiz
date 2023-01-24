@@ -1,6 +1,3 @@
-//Create quiz variable globally as will be used in multiple functions
-var quiz = document.querySelector("#questions");
-
 //Timer value, declared outside of function as will need to be used in other areas outside of function so needs to be manipulated I THINK
 var timeLeft = 60;
 var score = 0;
@@ -25,6 +22,7 @@ else if(document.URL.includes("highscores.html")){
 
 //Function to start quiz
 function startQuiz(){
+    var quiz = document.querySelector("#questions");
     var startScreen = document.querySelector("#start-screen");
     var button = document.querySelector("#start");
     //Checks to see if button is pressed
@@ -43,9 +41,8 @@ function timer(){
     var timeInterval = setInterval(function (){
         timeLeft--;
         timer.textContent = timeLeft
-        
-        //If time left is 0 it will hide elements and show the end screen, it will then run an event when the submit buttin is clicked to add the score and initials
-        if (timeLeft === 0){
+        //If time left is 0 and questiontracker is on final question it will hide elements and show the end screen
+        if (timeLeft === 0 && questionTracker !== 5){
             clearInterval(timeInterval);
             var choices = document.querySelector("#questions");
             var endScreen = document.querySelector("#end-screen");
@@ -77,6 +74,7 @@ function questionOrder(){
     var totalScore = document.querySelector("#final-score");
     
     //Adds the questions according to the tracker variable
+    //Switch case?
     if (questionTracker === 0){
         questions("Question 1: What keyword is used in CSS to prevent other rules from overriding it?", "!important", "!final", "!first", "!key", 1);
     }

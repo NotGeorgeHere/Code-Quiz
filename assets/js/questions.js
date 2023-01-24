@@ -26,7 +26,6 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
         button.addEventListener("click", function(event){
             //Tracks what is being clicked on within the element
             var option = event.target;
-            
             //If its a button then it will check to see whether the data-answer attribute is true or not, if true score will add by 1
             if(option.matches("button") === true){
                 if (option.getAttribute("data-answer") === "true"){
@@ -51,11 +50,9 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
                 questionOrder();   
             } 
         })
-
         //Appends the button to the parent element of choices
         choices.appendChild(button);
         button.setAttribute("id", "option")
-
         //Add a boolean value to each button based off of answer
         //If the index of the array is the same as the answer argument, answer = true else its false, can now keep track of the right answer
         if (index == answer){
@@ -65,7 +62,4 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
             button.setAttribute("data-answer", false);
         }   
     }
-
-    //Local variables for each element needed
-    // var button = document.querySelectorAll("#option");
 }
