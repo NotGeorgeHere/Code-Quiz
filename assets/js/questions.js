@@ -32,9 +32,9 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
                 if (option.getAttribute("data-answer") === "true"){
                     score++;
                 }
-                //If answer is wrong, time will -5 and all elements will be removed again to allow for next questions to be presented
+                //If answer is wrong, time will -10 and all elements will be removed again to allow for next questions to be presented
                 else{
-                    timeLeft -= 5;
+                    timeLeft -= 10;
                 }
                 //Once this is done, it will remove the text content of the title and choices to be empty for the next question
                 questionTitle.textContent = " ";

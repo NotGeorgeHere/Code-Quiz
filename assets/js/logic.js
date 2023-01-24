@@ -1,12 +1,6 @@
-/* PsuedoCode 
-    When start quiz is pressed, so event listener on it, hide everything in id start screen using class hide
-    remove class hide for questions id so that then shows on screen
-    create a timer for 1 minute
-*/
 
 //Create quiz variable globally as will be used in multiple functions
 var quiz = document.querySelector("#questions");
-
 
 //Timer value, declared outside of function as will need to be used in other areas outside of function so needs to be manipulated I THINK
 var timeLeft = 60;
@@ -15,15 +9,17 @@ var score = 0;
 //Global variable to track which quiz question you're on;
 var questionTracker = 0;
 
+//Global variables to keep track of the array content for the highscore page.
+var finalScoreArray = [];
+var finalInitialArray = [];
 
 //Does a check to see which HTML page is currently being presented
 if (document.URL.includes("index.html")){
     startQuiz();
 }
 else if(document.URL.includes("highscores.html")){
-    //Run highscore stuff
+    init()
 }
-
 
 //Function to start quiz
 function startQuiz(){
@@ -78,17 +74,59 @@ function questionOrder(){
     else if (questionTracker === 4){
         questions("Question 5: How does a for loop start?", "for i=1 to 5", "for(i<=5;i++)", "for(i=0;i<5)", "for (i=0;i<5;i++)", 4);
     }
-    //Once all questions are asked takes tracker variable and can now save score and timer in new variable to be stored in local storage and go to end screen
+    //Runs once all questions are asked
     else if(questionTracker === 5){
-        var finalScore = timeLeft + score;
-        endScreen.setAttribute("class", "");
-        totalScore.textContent = finalScore;
-        localStorage.setItem("finalScore", finalScore);
-        timeLeft = 1;
+        storeArrays();    
+}
 
-        submitButton.addEventListener("click", function(event){
-            localStorage.setItem("initials", initials.value);
-        })
+function storeArrays(){
+    //Sets score to 0 if they didnt get any answers right and pushes this to global finalScoreArray
+    if (score === 0){
+        finalScore = 0;
+        totalScore.textContent = "0";
     }
-    
+    //If not 0 it will get the final score by adding score and time left and pushing this to array
+    else{
+        var finalScore = timeLeft + score;
+        totalScore.textContent = finalScore;
+        
+    }
+    //This displays the endscreen and takes away the hide class and sets the timer to 1 so it no longer counts down
+    endScreen.setAttribute("class", "");
+    timeLeft = 1;
+
+    //If submitbutton is pressed on end screen, the initials typed in will be pushed to an initials array and both these arrays will be stored.
+    submitButton.addEventListener("click", function(event){
+        //Checks to make sure people only put in initials
+        if (initials.value.length <= 3){
+            finalInitialArray.push(initials.value);
+            finalScoreArray.push(finalScore); 
+        }
+
+        localStorage.setItem("initials", JSON.stringify(finalInitialArray));
+        localStorage.setItem("finalScore", JSON.stringify(finalScoreArray));
+    })   
+    }
+}
+
+function init(){
+    //Get stored arrays from local storage
+    var storedInitial = JSON.parse(localStorage.getItem("initials"));
+    var storedFinalScore = JSON.parse(localStorage.getItem("finalScore"));
+
+    // If initals and score were retrieved from localStorage, update the arrays for them
+    if (storedInitial !== null && storedFinalScore !== null){
+        finalInitialArray = storedInitial;
+        finalScoreArray = storedFinalScore;
+    }
+    renderArray();
+}
+
+function renderArray(){
+    var highScoreList = document.querySelector("#highscores");
+    for (var i = 0; i < finalScoreArray.length; i++){
+        var li = document.createElement("li");
+        li.textContent = finalInitialArray[i] + " Score: " + finalScoreArray[i];
+        highScoreList.appendChild(li);
+    }
 }
