@@ -8,8 +8,13 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
     //Gets the id for the question-title and stores it as variable
     var questionTitle = document.querySelector("#question-title");
     var choices = document.querySelector("#choices");
+    var feedback = document.querySelector("#feedback");
     //Takes away 1 from the answer argument as its been reading from a base index 0 not 1 as the options are being taken in as
     answer--;
+
+    //Sounds
+    var wrong = new Audio("assets/sfx/incorrect.wav");
+    var correct = new Audio("assets/sfx/correct.wav");
 
     //Puts all of the options into 1 array that can be accessed
     var options = [optionOne, optionTwo, optionThree, optionFour];
@@ -31,10 +36,16 @@ function questions(question, optionOne, optionTwo, optionThree, optionFour, answ
             if(option.matches("button") === true){
                 if (option.getAttribute("data-answer") === "true"){
                     score++;
+                    feedback.setAttribute("class", "feedback")
+                    feedback.textContent = "Correct";
+                    correct.play();
                 }
                 //If answer is wrong, time will -10 and all elements will be removed again to allow for next questions to be presented
                 else{
                     timeLeft -= 10;
+                    feedback.setAttribute("class", "feedback")
+                    feedback.textContent = "Wrong";
+                    wrong.play();
                 }
                 //Once this is done, it will remove the text content of the title and choices to be empty for the next question
                 questionTitle.textContent = " ";
