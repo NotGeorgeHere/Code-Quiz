@@ -43,6 +43,7 @@ function timer(){
         timer.textContent = timeLeft
         //If time left is 0 and questiontracker is on final question it will hide elements and show the end screen
         if (timeLeft === 0 && questionTracker !== 5){
+            timer.remove();
             clearInterval(timeInterval);
             var choices = document.querySelector("#questions");
             var endScreen = document.querySelector("#end-screen");
@@ -108,6 +109,8 @@ function storeArrays(){
     }
     //This displays the endscreen and takes away the hide class and sets the timer to 1 so it no longer counts down
     endScreen.setAttribute("class", "");
+    var timer = document.querySelector("#time");
+    timer.remove();
     timeLeft = 1;
     //If submitbutton is pressed on end screen, the initials typed in will be pushed to an initials array and both these arrays will be stored.
     submitButton.addEventListener("click", function(event){
