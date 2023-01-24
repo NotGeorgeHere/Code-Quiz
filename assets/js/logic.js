@@ -33,7 +33,7 @@ function startQuiz(){
         startScreen.setAttribute("class", "hide");
         quiz.setAttribute("class", "");
         timer();
-        questionOrder();  
+        questionOrder();
     })
 }
 
@@ -44,11 +44,27 @@ function timer(){
         timeLeft--;
         timer.textContent = timeLeft
         
-        //TODO add go to end screen
+        //If time left is 0 it will hide elements and show the end screen, it will then run an event when the submit buttin is clicked to add the score and initials
         if (timeLeft === 0){
             clearInterval(timeInterval);
+            var choices = document.querySelector("#questions");
             var endScreen = document.querySelector("#end-screen");
+            var finalScore = document.querySelector("#final-score");
+            var submitButton = document.querySelector("#submit")
+
+            //Unhides endscreen and hides the question choices
             endScreen.setAttribute("class", "");
+            choices.setAttribute("class", "hide");
+            //Sets the text to the score amount
+            finalScore.textContent = score;
+            //Will run the saveHighScore function when submit button is pressed
+            submitButton.addEventListener("click", function(event){
+                //Checks to make sure people only put in initials
+                if (initials.value.length <= 3){
+                    //Runs the savehighscore function with finalscore as an argument
+                    saveHighScore(score);
+                }
+            })
           }
     }, 1000)      
 }
@@ -90,13 +106,11 @@ function storeArrays(){
     //If not 0 it will get the final score by adding score and time left and pushing this to array
     else{
         var finalScore = timeLeft + score;
-        totalScore.textContent = finalScore;
-        
+        totalScore.textContent = finalScore;    
     }
     //This displays the endscreen and takes away the hide class and sets the timer to 1 so it no longer counts down
     endScreen.setAttribute("class", "");
     timeLeft = 1;
-
     //If submitbutton is pressed on end screen, the initials typed in will be pushed to an initials array and both these arrays will be stored.
     submitButton.addEventListener("click", function(event){
         //Checks to make sure people only put in initials
@@ -104,8 +118,6 @@ function storeArrays(){
             //Runs the savehighscore function with finalscore as an argument
             saveHighScore(finalScore);
         }
-        
-
     })   
     }
 }
@@ -149,4 +161,3 @@ function saveHighScore(score){
     }
     
 }
-
